@@ -2,6 +2,7 @@ import { USERS, STATUS_STYLES } from "./constants";
 
 interface UsersTableProps {
   dark: boolean;
+  onSelectUser?: (name: string) => void;
 }
 
 interface User {
@@ -16,33 +17,22 @@ interface UserRowProps {
   user: User;
   index: number;
   dark: boolean;
+  onSelectUser?: (name: string) => void;
 }
 
-export default function UsersTable({ dark }: UsersTableProps) {
+export default function UsersTable({ dark, onSelectUser }: UsersTableProps) {
   return (
-    <div
-      className={`rounded-xl border p-4 ${
-        dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
-      }`}
-    >
-      {/* Card header */}
+    <div className={`rounded-xl border p-4 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="text-sm font-semibold">Recent users</div>
-          <div className={`text-xs ${dark ? "text-gray-500" : "text-gray-400"}`}>
-            Last signups &amp; status
-          </div>
+          <div className={`text-xs ${dark ? "text-gray-500" : "text-gray-400"}`}>Last signups &amp; status</div>
         </div>
-        <button className="text-xs font-medium text-purple-500 hover:text-purple-400">
-          View all
-        </button>
+        <button className="text-xs font-medium text-purple-500 hover:text-purple-400">View all</button>
       </div>
 
-      {/* Table header */}
       <div
-        className={`grid text-xs font-medium mb-2 pb-1 border-b ${
-          dark ? "text-gray-500 border-gray-800" : "text-gray-400 border-gray-100"
-        }`}
+        className={`grid text-xs font-medium mb-2 pb-1 border-b ${dark ? "text-gray-500 border-gray-800" : "text-gray-400 border-gray-100"}`}
         style={{ gridTemplateColumns: "1.6fr 1.5fr 0.8fr 0.7fr 0.4fr" }}
       >
         <span>Name</span>
@@ -52,34 +42,43 @@ export default function UsersTable({ dark }: UsersTableProps) {
         <span>Trips</span>
       </div>
 
-      {/* Rows */}
       <div className="flex flex-col">
         {USERS.map((user, i) => (
-          <UserRow key={user.name} user={user as User} index={i} dark={dark} />
+          <UserRow
+            key={user.name}
+            user={user as User}
+            index={i}
+            dark={dark}
+            onSelectUser={onSelectUser}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function UserRow({ user, index, dark }: UserRowProps) {
+function UserRow({ user, index, dark, onSelectUser }: UserRowProps) {
   return (
     <div
-      className={`grid text-xs py-2.5 items-center cursor-pointer rounded-lg px-1 transition-colors ${
-        dark
-          ? "hover:bg-gray-800 border-gray-800"
-          : "hover:bg-gray-50 border-gray-100"
-      } ${index > 0 ? "border-t" : ""}`}
+      onClick={() => onSelectUser?.(user.name)}
+      className={`grid text-xs py-2.5 items-center rounded-lg px-1 transition-colors ${
+        onSelectUser ? "cursor-pointer" : ""
+      } ${dark ? "hover:bg-gray-800 border-gray-800" : "hover:bg-violet-50 border-gray-100"} ${
+        index > 0 ? "border-t" : ""
+      }`}
       style={{ gridTemplateColumns: "1.6fr 1.5fr 0.8fr 0.7fr 0.4fr" }}
     >
-      <span className="font-medium">{user.name}</span>
+      <span className="font-medium flex items-center gap-1.5">
+        <img
+          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
+          alt={user.name}
+          className="w-5 h-5 rounded-full bg-violet-100 shrink-0"
+        />
+        {user.name}
+      </span>
       <span className={dark ? "text-gray-400" : "text-gray-500"}>{user.email}</span>
       <span>
-        <span
-          className={`px-2 py-0.5 rounded-full text-xs ${
-            dark ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-600"
-          }`}
-        >
+        <span className={`px-2 py-0.5 rounded-full text-xs ${dark ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-600"}`}>
           {user.role}
         </span>
       </span>

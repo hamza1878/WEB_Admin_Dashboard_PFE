@@ -10,10 +10,10 @@ export default function LoginAdmin({ onSwitch = () => {} }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+    const navigate = useNavigate();
   
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    const navigate = useNavigate();
 
       navigate("/dashboard");
     setLoading(true);
@@ -115,13 +115,13 @@ export default function LoginAdmin({ onSwitch = () => {} }) {
             </span>
           </div>
 
-          <h1 className="font-black leading-none mb-5 transition-colors duration-300"
+          <h1 className="font-black  leading-none mb-5 transition-colors duration-300"
             style={{ fontSize: 52, letterSpacing: "-2.5px", color: t.heading }}>
-            Transport<br />
-            <span style={{
+            Transport
+            <span className="p-2" style={{
               background: "linear-gradient(135deg, #a855f7 20%, #7c3aed 80%)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-            }}>Command</span><br />
+            }}>Command</span>
             Center.
           </h1>
 
@@ -133,9 +133,9 @@ export default function LoginAdmin({ onSwitch = () => {} }) {
           <div className="flex mt-12 rounded-2xl overflow-hidden transition-colors duration-300"
             style={{ border: `1px solid ${t.kpiBorder}` }}>
             {[
-              { value: "312", label: "Active Vehicles", icon: "🚍" },
-              { value: "98.2%", label: "On-Time Rate", icon: "🕐" },
-              { value: "4.8K", label: "Trips Today", icon: "📍" },
+              { value: "312", label: "Active Vehicles" },
+              { value: "98.2%", label: "On-Time Rate" },
+              { value: "4.8K", label: "Trips Today" },
             ].map((s, i) => (
               <div key={s.label} className="flex-1 p-5 transition-colors duration-300" style={{
                 background: i % 2 === 0 ? t.kpiBg0 : t.kpiBg1,
