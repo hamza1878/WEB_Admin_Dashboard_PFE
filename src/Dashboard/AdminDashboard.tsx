@@ -7,8 +7,8 @@ import SystemStatus from "./SystemStatus";
 import UsersPage from "./userpage";
 
 import UsersCreate from "./UsersCreate";
+import AgencyPaymentsData from "./PayData";
 
-// Pages order — used to determine slide direction
 const PAGE_ORDER = ["dashboard", "users", "trips", "payments", "help", "settings", "security"];
 
 interface PageProps {
@@ -35,17 +35,17 @@ function renderPage(page: string, props: PageProps) {
           <Header dark={props.dark} />
           <StatsRow dark={props.dark} />
           <div className="grid gap-4" style={{ gridTemplateColumns: "2fr 1.3fr" }}>
-            <UsersTable dark={props.dark} onSelectUser={props.onSelectUser} />
+            <UsersTable dark={props.dark}  />
             <SystemStatus dark={props.dark} />
           </div>
         </>
       );
     case "users":
-      return <UsersPage dark={props.dark} onSelectUser={props.onSelectUser} />;
+      return <UsersPage dark={props.dark}  />;
     case "trips":
       return <UsersPage dark={props.dark} />;
     case "payments":
-      return <UsersPage dark={props.dark} />;
+      return <AgencyPaymentsData dark={props.dark}/>;
     case "help":
       return <PlaceholderPage dark={props.dark} title="Help center" icon="🎧" description="Browse docs, open tickets and contact support." />;
     case "settings":
@@ -62,7 +62,6 @@ export default function AdminDashboard() {
   const [activePage, setActivePage] = useState("dashboard");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
-  // For slide animation
   const [displayPage, setDisplayPage] = useState("dashboard");
   const [slideClass, setSlideClass] = useState("");
   const prevPageRef = useRef("dashboard");
@@ -74,7 +73,6 @@ export default function AdminDashboard() {
     const nextIdx = PAGE_ORDER.indexOf(page);
     const direction = nextIdx >= prevIdx ? "left" : "right";
 
-    // Animate out
     setSlideClass(direction === "left" ? "animate-slide-out-left" : "animate-slide-out-right");
 
     setTimeout(() => {
@@ -102,10 +100,10 @@ export default function AdminDashboard() {
       `}</style>
 
       <div
-        className={`flex min-h-screen text-sm overflow-hidden ${dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"}`}
+        className={`absolute inset-0
+           flex min-h-screen text-sm overflow-hidden ${dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"}`}
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
-        {/* Sidebar */}
         <Sidebar
           dark={dark}
           onToggleDark={() => setDark(!dark)}
@@ -113,10 +111,8 @@ export default function AdminDashboard() {
           onNavigate={navigate}
         />
 
-        {/* Content area */}
         <div className="flex flex-1 overflow-hidden relative">
 
-          {/* Main page — shrinks when panel open */}
           <main
             className={`flex flex-col gap-4 p-6 min-w-0 overflow-y-auto transition-all duration-300 ease-in-out ${
               selectedUser ? "w-1/2" : "w-full"
@@ -131,20 +127,7 @@ export default function AdminDashboard() {
             </div>
           </main>
 
-          {/* Sliding panel */}
-          <aside
-            className={`transition-all duration-300 ease-in-out overflow-y-auto border-l ${
-              dark ? "border-gray-800" : "border-gray-200"
-            } ${selectedUser ? "w-1/2 opacity-100" : "w-0 opacity-0 pointer-events-none"}`}
-          >
-            {selectedUser && (
-              <UsersCreate
-                dark={dark}
-                prefillName={selectedUser}
-                onClose={() => setSelectedUser(null)}
-              />
-            )}
-          </aside>
+        
         </div>
       </div>
     </>

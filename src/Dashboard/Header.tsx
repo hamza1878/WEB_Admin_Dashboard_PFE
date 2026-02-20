@@ -5,7 +5,6 @@ interface HeaderProps {
 export default function Header({ dark }: HeaderProps) {
   return (
     <div className="flex items-center justify-between gap-3">
-      {/* Left: title */}
       <div>
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-semibold">Admin dashboard</h1>
@@ -21,7 +20,6 @@ export default function Header({ dark }: HeaderProps) {
         </p>
       </div>
 
-      {/* Right: search + action */}
       <div className="flex items-center gap-2">
         <div
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs min-w-48 cursor-text ${

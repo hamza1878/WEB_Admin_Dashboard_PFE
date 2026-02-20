@@ -23,7 +23,6 @@ export default function SystemStatus({ dark }: SystemStatusProps) {
         dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
       }`}
     >
-      {/* Card header */}
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="text-sm font-semibold">System status</div>

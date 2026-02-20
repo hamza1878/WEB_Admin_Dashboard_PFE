@@ -2,7 +2,6 @@ import { USERS, STATUS_STYLES } from "./constants";
 
 interface UsersTableProps {
   dark: boolean;
-  onSelectUser?: (name: string) => void;
 }
 
 interface User {
@@ -20,7 +19,7 @@ interface UserRowProps {
   onSelectUser?: (name: string) => void;
 }
 
-export default function UsersTable({ dark, onSelectUser }: UsersTableProps) {
+export default function UsersTable({ dark }: UsersTableProps) {
   return (
     <div className={`rounded-xl border p-4 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
       <div className="flex items-start justify-between mb-4">
@@ -49,7 +48,6 @@ export default function UsersTable({ dark, onSelectUser }: UsersTableProps) {
             user={user as User}
             index={i}
             dark={dark}
-            onSelectUser={onSelectUser}
           />
         ))}
       </div>
@@ -60,10 +58,8 @@ export default function UsersTable({ dark, onSelectUser }: UsersTableProps) {
 function UserRow({ user, index, dark, onSelectUser }: UserRowProps) {
   return (
     <div
-      onClick={() => onSelectUser?.(user.name)}
-      className={`grid text-xs py-2.5 items-center rounded-lg px-1 transition-colors ${
-        onSelectUser ? "cursor-pointer" : ""
-      } ${dark ? "hover:bg-gray-800 border-gray-800" : "hover:bg-violet-50 border-gray-100"} ${
+      className={`grid text-xs py-2.5 items-center rounded-lg px-1 transition-colors 
+       ${dark ? "hover:bg-gray-800 border-gray-800" : "hover:bg-violet-50 border-gray-100"} ${
         index > 0 ? "border-t" : ""
       }`}
       style={{ gridTemplateColumns: "1.6fr 1.5fr 0.8fr 0.7fr 0.4fr" }}

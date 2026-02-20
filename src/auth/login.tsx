@@ -141,7 +141,7 @@ export default function LoginAdmin({ onSwitch = () => {} }) {
                 background: i % 2 === 0 ? t.kpiBg0 : t.kpiBg1,
                 borderRight: i < 2 ? `1px solid ${t.kpiBorder}` : "none",
               }}>
-                <div className="text-lg mb-1">{s.icon}</div>
+                <div className="text-lg mb-1"></div>
                 <div className="text-xl font-extrabold transition-colors duration-300"
                   style={{ color: t.kpiVal, letterSpacing: "-0.5px" }}>{s.value}</div>
                 <div className="text-xs mt-1 tracking-wide transition-colors duration-300"

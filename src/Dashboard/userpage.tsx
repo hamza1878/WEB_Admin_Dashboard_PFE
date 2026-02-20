@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { USERS, STATUS_STYLES, type UserStatus } from "./constants";
 
 interface UsersPageProps {
@@ -11,32 +12,224 @@ const ROLE_STYLES: Record<string, string> = {
   Admin: "bg-gray-200 text-gray-700",
 };
 
-const ALL_USERS = [
+type User = {
+  name: string;
+  email: string;
+  role: string;
+  status: UserStatus;
+  trips: number;
+};
+
+const INITIAL_USERS: User[] = [
   ...USERS,
   { name: "Aiko Tanaka", email: "aiko.t@example.com", role: "Driver", status: "active" as UserStatus, trips: 67 },
   { name: "Lucas Morel", email: "l.morel@example.com", role: "Rider", status: "active" as UserStatus, trips: 14 },
   { name: "Priya Nair", email: "priya.n@example.com", role: "Driver", status: "pending" as UserStatus, trips: 2 },
 ];
 
+// ─── Add User Modal ────────────────────────────────────────────────────────────
+interface AddUserModalProps {
+  dark: boolean;
+  onClose: () => void;
+  onAdd: (user: User) => void;
+}
+
+function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    role: "Rider",
+    status: "active" as UserStatus,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const bg = dark ? "bg-gray-900" : "bg-white";
+  const inputCls = dark
+    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:border-violet-500"
+    : "bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-violet-400";
+  const labelCls = dark ? "text-gray-300" : "text-gray-600";
+  const divider = dark ? "border-gray-800" : "border-gray-100";
+
+  function validate() {
+    const e: Record<string, string> = {};
+    if (!form.name.trim()) e.name = "Name is required";
+    if (!form.email.trim()) e.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Invalid email";
+    return e;
+  }
+
+  function handleSubmit() {
+    const e = validate();
+    if (Object.keys(e).length) { setErrors(e); return; }
+    onAdd({ ...form, trips: 0 });
+    onClose();
+  }
+
+  return (
+    // Backdrop
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      {/* Modal card */}
+      <div
+        className={`relative w-full max-w-md rounded-2xl shadow-2xl border ${bg} ${dark ? "border-gray-800" : "border-gray-200"}`}
+        style={{ animation: "modalIn 0.2s ease" }}
+      >
+        {/* Header */}
+        <div className={`flex items-center justify-between px-6 py-4 border-b ${divider}`}>
+          <div>
+            <h2 className="text-base font-semibold">Add new user</h2>
+            <p className={`text-xs mt-0.5 ${dark ? "text-gray-400" : "text-gray-500"}`}>
+              Fill in the details to create a user account.
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className={`w-7 h-7 flex items-center justify-center rounded-full text-sm transition-colors ${dark ? "hover:bg-gray-800 text-gray-400" : "hover:bg-gray-100 text-gray-500"}`}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 flex flex-col gap-4">
+          {/* Avatar preview */}
+          <div className="flex items-center gap-3">
+            <img
+              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${form.name || "new"}`}
+              alt="preview"
+              className="w-12 h-12 rounded-full bg-violet-100"
+            />
+            <div>
+              <p className="text-sm font-medium">{form.name || "Full name"}</p>
+              <p className={`text-xs ${dark ? "text-gray-400" : "text-gray-500"}`}>{form.email || "email@example.com"}</p>
+            </div>
+          </div>
+
+          {/* Name */}
+          <div className="flex flex-col gap-1">
+            <label className={`text-xs font-medium ${labelCls}`}>Full name</label>
+            <input
+              className={`rounded-lg border px-3 py-2 text-sm outline-none transition-colors ${inputCls} ${errors.name ? "border-red-400" : ""}`}
+              placeholder="Jane Doe"
+              value={form.name}
+              onChange={(e) => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: "" }); }}
+            />
+            {errors.name && <span className="text-xs text-red-500">{errors.name}</span>}
+          </div>
+
+          {/* Email */}
+          <div className="flex flex-col gap-1">
+            <label className={`text-xs font-medium ${labelCls}`}>Email address</label>
+            <input
+              className={`rounded-lg border px-3 py-2 text-sm outline-none transition-colors ${inputCls} ${errors.email ? "border-red-400" : ""}`}
+              placeholder="jane@example.com"
+              type="email"
+              value={form.email}
+              onChange={(e) => { setForm({ ...form, email: e.target.value }); setErrors({ ...errors, email: "" }); }}
+            />
+            {errors.email && <span className="text-xs text-red-500">{errors.email}</span>}
+          </div>
+
+          {/* Role & Status */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <label className={`text-xs font-medium ${labelCls}`}>Role</label>
+              <select
+                className={`rounded-lg border px-3 py-2 text-sm outline-none transition-colors cursor-pointer ${inputCls}`}
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
+              >
+                <option>Rider</option>
+                <option>Driver</option>
+                <option>Admin</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className={`text-xs font-medium ${labelCls}`}>Status</label>
+              <select
+                className={`rounded-lg border px-3 py-2 text-sm outline-none transition-colors cursor-pointer ${inputCls}`}
+                value={form.status}
+                onChange={(e) => setForm({ ...form, status: e.target.value as UserStatus })}
+              >
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="blocked">Blocked</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className={`flex items-center justify-end gap-2 px-6 py-4 border-t ${divider}`}>
+          <button
+            onClick={onClose}
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${dark ? "bg-gray-800 hover:bg-gray-700 text-gray-300" : "bg-gray-100 hover:bg-gray-200 text-gray-600"}`}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 rounded-full text-white text-xs font-medium transition-opacity hover:opacity-90"
+            style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)" }}
+          >
+            Create user
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes modalIn {
+          from { opacity: 0; transform: scale(0.96) translateY(8px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// ─── Main Page ─────────────────────────────────────────────────────────────────
 export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
+  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
+  const [showModal, setShowModal] = useState(false);
+
   const card = dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200";
   const muted = dark ? "text-gray-400" : "text-gray-500";
   const divider = dark ? "border-gray-800" : "border-gray-100";
 
+  function handleAddUser(user: User) {
+    setUsers((prev) => [user, ...prev]);
+  }
+
   return (
     <div className="flex flex-col gap-5">
+      {/* Modal */}
+      {showModal && (
+        <AddUserModal
+          dark={dark}
+          onClose={() => setShowModal(false)}
+          onAdd={handleAddUser}
+        />
+      )}
+
+      {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-semibold">Users</h1>
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${dark ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-500"}`}>
-              {ALL_USERS.length} total
+              {users.length} total
             </span>
           </div>
           <p className={`text-xs mt-0.5 ${muted}`}>Manage riders, drivers and admins.</p>
         </div>
-        <button className="flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-xs font-medium"
-          style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)" }}>
+        <button
+          onClick={() => setShowModal(true)}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-xs font-medium transition-opacity hover:opacity-90"
+          style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)" }}
+        >
           ＋ Add user
         </button>
       </div>
@@ -44,10 +237,10 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
       {/* Stats strip */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: "Total users", value: "128", sub: "+12 this week" },
-          { label: "Active", value: "94", sub: "73% of total" },
-          { label: "Pending", value: "17", sub: "Awaiting review" },
-          { label: "Blocked", value: "7", sub: "Requires action" },
+          { label: "Total users", value: users.length.toString(), sub: "+12 this week" },
+          { label: "Active", value: users.filter((u) => u.status === "active").length.toString(), sub: `${Math.round((users.filter((u) => u.status === "active").length / users.length) * 100)}% of total` },
+          { label: "Pending", value: users.filter((u) => u.status === "pending").length.toString(), sub: "Awaiting review" },
+          { label: "Blocked", value: users.filter((u) => u.status === "blocked").length.toString(), sub: "Requires action" },
         ].map((s) => (
           <div key={s.label} className={`rounded-xl border p-3 flex flex-col gap-1 ${card}`}>
             <span className={`text-xs ${muted}`}>{s.label}</span>
@@ -66,8 +259,11 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
           </div>
           <div className="flex items-center gap-1.5">
             {["All", "Riders", "Drivers", "Admins"].map((f, i) => (
-              <button key={f} className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${i === 0 ? "text-white" : dark ? "text-gray-400 hover:bg-gray-800" : "text-gray-500 hover:bg-gray-100"}`}
-                style={i === 0 ? { background: "linear-gradient(135deg,#a855f7,#7c3aed)" } : {}}>
+              <button
+                key={f}
+                className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${i === 0 ? "text-white" : dark ? "text-gray-400 hover:bg-gray-800" : "text-gray-500 hover:bg-gray-100"}`}
+                style={i === 0 ? { background: "linear-gradient(135deg,#a855f7,#7c3aed)" } : {}}
+              >
                 {f}
               </button>
             ))}
@@ -75,24 +271,40 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
         </div>
 
         {/* Header */}
-        <div className={`grid text-xs font-medium px-4 py-2 ${muted} border-b ${divider}`}
-          style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 0.7fr 0.5fr" }}>
+        <div
+          className={`grid text-xs font-medium px-4 py-2 ${muted} border-b ${divider}`}
+          style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 0.7fr 0.5fr" }}
+        >
           <span>Name</span><span>Email</span><span>Role</span><span>Status</span><span>Trips</span><span></span>
         </div>
 
         {/* Rows */}
-        {ALL_USERS.map((user, i) => (
-          <div key={user.name}
+        {users.map((user, i) => (
+          <div
+            key={`${user.name}-${i}`}
             onClick={() => onSelectUser?.(user.name)}
             className={`grid px-4 py-3 text-xs items-center cursor-pointer transition-colors ${dark ? "hover:bg-gray-800" : "hover:bg-violet-50"} ${i > 0 ? `border-t ${divider}` : ""}`}
-            style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 0.7fr 0.5fr" }}>
+            style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 0.7fr 0.5fr" }}
+          >
             <div className="flex items-center gap-2">
-              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt={user.name} className="w-6 h-6 rounded-full bg-violet-100 shrink-0" />
+              <img
+                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
+                alt={user.name}
+                className="w-6 h-6 rounded-full bg-violet-100 shrink-0"
+              />
               <span className="font-medium">{user.name}</span>
             </div>
             <span className={muted}>{user.email}</span>
-            <span><span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_STYLES[user.role]}`}>{user.role}</span></span>
-            <span><span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[user.status]}`}>{user.status.charAt(0).toUpperCase() + user.status.slice(1)}</span></span>
+            <span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_STYLES[user.role] ?? "bg-gray-100 text-gray-600"}`}>
+                {user.role}
+              </span>
+            </span>
+            <span>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[user.status]}`}>
+                {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+              </span>
+            </span>
             <span className="font-medium">{user.trips}</span>
             <button className="text-violet-500 hover:text-violet-400 text-xs">View →</button>
           </div>

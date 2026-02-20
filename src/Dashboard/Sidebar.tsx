@@ -27,7 +27,6 @@ export default function Sidebar({ dark, onToggleDark, activePage, onNavigate }: 
         dark ? "bg-gray-900 border-gray-800" : "bg-gray-50 border-gray-200"
       }`}
     >
-      {/* Logo */}
       <div className="flex items-center gap-2 px-2 pb-2">
         <div
           className="w-7 h-7 rounded-xl flex items-center justify-center text-white font-bold text-base"
@@ -86,8 +85,8 @@ function NavSection({ label, items, dark, activePage, onNavigate }: NavSectionPr
 
 function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
   return (
-    <div className={`pt-3 border-t ${dark ? "border-gray-800" : "border-gray-200"}`}>
-      <div className="flex items-center gap-2">
+    <div className={` pt-3 border-t ${dark ? "border-gray-800" : "border-gray-200"}`}>
+      <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2">
         <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 bg-purple-200">
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
@@ -95,7 +94,7 @@ function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className=" flex-1 min-w-0">
           <div className="text-sm font-medium truncate">Alex Martin</div>
           <div className={`text-xs ${dark ? "text-gray-500" : "text-gray-400"}`}>Super admin</div>
         </div>
