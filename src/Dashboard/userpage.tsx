@@ -27,7 +27,6 @@ const INITIAL_USERS: User[] = [
   { name: "Priya Nair", email: "priya.n@example.com", role: "Driver", status: "pending" as UserStatus, trips: 2 },
 ];
 
-// ─── Add User Modal ────────────────────────────────────────────────────────────
 interface AddUserModalProps {
   dark: boolean;
   onClose: () => void;
@@ -66,18 +65,15 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
   }
 
   return (
-    // Backdrop
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      {/* Modal card */}
       <div
         className={`relative w-full max-w-md rounded-2xl shadow-2xl border ${bg} ${dark ? "border-gray-800" : "border-gray-200"}`}
         style={{ animation: "modalIn 0.2s ease" }}
       >
-        {/* Header */}
         <div className={`flex items-center justify-between px-6 py-4 border-b ${divider}`}>
           <div>
             <h2 className="text-base font-semibold">Add new user</h2>
@@ -93,9 +89,7 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
           </button>
         </div>
 
-        {/* Body */}
         <div className="px-6 py-5 flex flex-col gap-4">
-          {/* Avatar preview */}
           <div className="flex items-center gap-3">
             <img
               src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${form.name || "new"}`}
@@ -108,7 +102,6 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
             </div>
           </div>
 
-          {/* Name */}
           <div className="flex flex-col gap-1">
             <label className={`text-xs font-medium ${labelCls}`}>Full name</label>
             <input
@@ -120,7 +113,6 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
             {errors.name && <span className="text-xs text-red-500">{errors.name}</span>}
           </div>
 
-          {/* Email */}
           <div className="flex flex-col gap-1">
             <label className={`text-xs font-medium ${labelCls}`}>Email address</label>
             <input
@@ -133,7 +125,6 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
             {errors.email && <span className="text-xs text-red-500">{errors.email}</span>}
           </div>
 
-          {/* Role & Status */}
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
               <label className={`text-xs font-medium ${labelCls}`}>Role</label>
@@ -162,7 +153,6 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
           </div>
         </div>
 
-        {/* Footer */}
         <div className={`flex items-center justify-end gap-2 px-6 py-4 border-t ${divider}`}>
           <button
             onClick={onClose}
@@ -190,10 +180,10 @@ function AddUserModal({ dark, onClose, onAdd }: AddUserModalProps) {
   );
 }
 
-// ─── Main Page ─────────────────────────────────────────────────────────────────
 export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
   const [users, setUsers] = useState<User[]>(INITIAL_USERS);
   const [showModal, setShowModal] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const card = dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200";
   const muted = dark ? "text-gray-400" : "text-gray-500";
@@ -205,7 +195,6 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Modal */}
       {showModal && (
         <AddUserModal
           dark={dark}
@@ -214,7 +203,6 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
         />
       )}
 
-      {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -226,15 +214,24 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
           <p className={`text-xs mt-0.5 ${muted}`}>Manage riders, drivers and admins.</p>
         </div>
         <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-xs font-medium transition-opacity hover:opacity-90"
-          style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)" }}
-        >
-          ＋ Add user
-        </button>
-      </div>
+  onClick={() => setShowModal(true)}
+  className="group flex items-center overflow-hidden
+             w-10 hover:w-36 focus:w-36
+             transition-all duration-300 ease-in-out
+             px-3 py-2 rounded-full text-white text-sm font-medium
+             bg-gradient-to-r from-purple-500 to-purple-700"
+>
+  <span className="text-lg leading-none">＋</span>
 
-      {/* Stats strip */}
+  <span
+    className="ml-2 whitespace-nowrap opacity-0
+               group-hover:opacity-100 group-focus:opacity-100
+               transition-opacity duration-200"
+  >
+    Add User
+  </span>
+</button></div>
+
       <div className="grid grid-cols-4 gap-3">
         {[
           { label: "Total users", value: users.length.toString(), sub: "+12 this week" },
@@ -250,9 +247,7 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
         ))}
       </div>
 
-      {/* Table */}
       <div className={`rounded-xl border ${card}`}>
-        {/* Toolbar */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${divider}`}>
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs w-48 ${dark ? "bg-gray-800 border-gray-700 text-gray-400" : "bg-gray-50 border-gray-200 text-gray-400"}`}>
             🔍 Search users…
@@ -270,7 +265,6 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
           </div>
         </div>
 
-        {/* Header */}
         <div
           className={`grid text-xs font-medium px-4 py-2 ${muted} border-b ${divider}`}
           style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 0.7fr 0.5fr" }}
@@ -278,7 +272,6 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
           <span>Name</span><span>Email</span><span>Role</span><span>Status</span><span>Trips</span><span></span>
         </div>
 
-        {/* Rows */}
         {users.map((user, i) => (
           <div
             key={`${user.name}-${i}`}

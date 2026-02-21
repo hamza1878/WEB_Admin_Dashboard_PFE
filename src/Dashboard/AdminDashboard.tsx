@@ -8,6 +8,9 @@ import UsersPage from "./userpage";
 
 import UsersCreate from "./UsersCreate";
 import AgencyPaymentsData from "./PayData";
+import TripsPage from "./TripsPage";
+import HelpCenter from "./HelpCentre";
+import SearchBar from "./SearchBar";
 
 const PAGE_ORDER = ["dashboard", "users", "trips", "payments", "help", "settings", "security"];
 
@@ -43,13 +46,13 @@ function renderPage(page: string, props: PageProps) {
     case "users":
       return <UsersPage dark={props.dark}  />;
     case "trips":
-      return <UsersPage dark={props.dark} />;
+      return <TripsPage dark={props.dark} />;
     case "payments":
       return <AgencyPaymentsData dark={props.dark}/>;
     case "help":
-      return <PlaceholderPage dark={props.dark} title="Help center" icon="🎧" description="Browse docs, open tickets and contact support." />;
+      return <HelpCenter dark={props.dark}  />;
     case "settings":
-      return <PlaceholderPage dark={props.dark} title="Settings" icon="⚙️" description="Configure your admin preferences." />;
+      return <SearchBar/>;
     case "security":
       return <PlaceholderPage dark={props.dark} title="Security" icon="🛡" description="Manage permissions, 2FA and audit logs." />;
     default:

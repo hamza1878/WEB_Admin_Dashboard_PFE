@@ -107,7 +107,7 @@ function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
           >
             {dark ? "☀" : "🌙"}
           </button>
-          <button className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs ${dark ? "border-gray-700 bg-gray-800 text-gray-300" : "border-gray-200 bg-white text-gray-500"}`}>
+          <button onClick={() => window.history.back()} className={`w-6 h-6 rounded-full border bg-border-red flex items-center justify-center text-xs ${dark ? "border-gray-700 bg-gray-800 text-gray-300" : "border-gray-200 bg-white text-gray-500"}`}>
             ↩
           </button>
         </div>
