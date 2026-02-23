@@ -11,6 +11,7 @@ import AgencyPaymentsData from "./PayData";
 import TripsPage from "./TripsPage";
 import HelpCenter from "./HelpCentre";
 import SearchBar from "./SearchBar";
+import TravelSyncTopNav from "./TopNavProps";
 
 const PAGE_ORDER = ["dashboard", "users", "trips", "payments", "help", "settings", "security"];
 
@@ -89,24 +90,29 @@ export default function AdminDashboard() {
     setTimeout(() => setSlideClass(""), 360);
   };
 
-  return (
-    <>
-      <style>{`
-        @keyframes slideOutLeft  { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-28px); } }
-        @keyframes slideOutRight { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(28px); } }
-        @keyframes slideInRight  { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:translateX(0); } }
-        @keyframes slideInLeft   { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
-        .animate-slide-out-left  { animation: slideOutLeft  0.18s ease forwards; }
-        .animate-slide-out-right { animation: slideOutRight 0.18s ease forwards; }
-        .animate-slide-in-right  { animation: slideInRight  0.18s ease forwards; }
-        .animate-slide-in-left   { animation: slideInLeft   0.18s ease forwards; }
-      `}</style>
+ return (
+  <>
+    <style>{`
+      @keyframes slideOutLeft  { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-28px); } }
+      @keyframes slideOutRight { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(28px); } }
+      @keyframes slideInRight  { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:translateX(0); } }
+      @keyframes slideInLeft   { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+      .animate-slide-out-left  { animation: slideOutLeft  0.18s ease forwards; }
+      .animate-slide-out-right { animation: slideOutRight 0.18s ease forwards; }
+      .animate-slide-in-right  { animation: slideInRight  0.18s ease forwards; }
+      .animate-slide-in-left   { animation: slideInLeft   0.18s ease forwards; }
+    `}</style>
 
-      <div
-        className={`absolute inset-0
-           flex min-h-screen text-sm overflow-hidden ${dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"}`}
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
+    <div
+      className={`min-h-screen flex flex-col ${
+        dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"
+      }`}
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      <TravelSyncTopNav onSearch={() => {}} />
+
+      <div className="flex flex-1 overflow-hidden">
+
         <Sidebar
           dark={dark}
           onToggleDark={() => setDark(!dark)}
@@ -114,25 +120,17 @@ export default function AdminDashboard() {
           onNavigate={navigate}
         />
 
-        <div className="flex flex-1 overflow-hidden relative">
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className={slideClass}>
+            {renderPage(displayPage, {
+              dark,
+              onSelectUser: (name) => setSelectedUser(name),
+              onNavigate: navigate,
+            })}
+          </div>
+        </main>
 
-          <main
-            className={`flex flex-col gap-4 p-6 min-w-0 overflow-y-auto transition-all duration-300 ease-in-out ${
-              selectedUser ? "w-1/2" : "w-full"
-            }`}
-          >
-            <div className={slideClass}>
-              {renderPage(displayPage, {
-                dark,
-                onSelectUser: (name) => setSelectedUser(name),
-                onNavigate: navigate,
-              })}
-            </div>
-          </main>
-
-        
-        </div>
       </div>
-    </>
-  );
-}
+    </div>
+  </>
+);}

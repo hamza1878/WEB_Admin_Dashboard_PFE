@@ -19,28 +19,16 @@ interface SidebarFooterProps {
   dark: boolean;
   onToggleDark: () => void;
 }
-
+ 
 export default function Sidebar({ dark, onToggleDark, activePage, onNavigate }: SidebarProps) {
   return (
+    
     <aside
       className={`w-60 min-h-screen sticky top-0 flex flex-col gap-4 px-3 py-4 border-r shrink-0 ${
         dark ? "bg-gray-900 border-gray-800" : "bg-gray-50 border-gray-200"
       }`}
     >
-      <div className="flex items-center gap-2 px-2 pb-2">
-        <div
-          className="w-7 h-7 rounded-xl flex items-center justify-center text-white font-bold text-base"
-          style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)" }}
-        >
-          A
-        </div>
-        <div>
-          <div className="text-sm font-semibold leading-none">Admin Center</div>
-          <div className={`text-xs mt-0.5 ${dark ? "text-gray-500" : "text-gray-400"}`}>
-            Web console
-          </div>
-        </div>
-      </div>
+      
 
       <NavSection label="Overview" items={NAV_ITEMS} dark={dark} activePage={activePage} onNavigate={onNavigate} />
       <NavSection label="Support & settings" items={NAV_SUPPORT} dark={dark} activePage={activePage} onNavigate={onNavigate} />

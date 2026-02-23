@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// ── Types ──────────────────────────────────────────────────────────────────
 type TicketStatus = "Open" | "Waiting for user" | "Resolved";
 
 interface Ticket {
@@ -35,7 +34,6 @@ interface HelpCenterProps {
   dark: boolean;
 }
 
-// ── Data ───────────────────────────────────────────────────────────────────
 const TICKETS: Ticket[] = [
   {
     id: "3241",
@@ -87,7 +85,6 @@ const TICKETS: Ticket[] = [
   },
 ];
 
-// ── Constants ──────────────────────────────────────────────────────────────
 const FILTERS = ["Open", "Waiting for user", "Resolved", "All"] as const;
 
 const GRADIENT = "linear-gradient(135deg,#8b5cf6,#6d28d9)";
@@ -104,7 +101,6 @@ const STATUS_PILL_DARK: Record<TicketStatus, string> = {
   "Resolved":         "bg-emerald-900/40 text-emerald-400",
 };
 
-// ── InitialAvatar ──────────────────────────────────────────────────────────
 function InitialAvatar({ name, md }: { name: string; md?: boolean }) {
   const initials = name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
   const sz       = md ? "w-8 h-8 text-sm" : "w-6 h-6 text-xs";
@@ -122,7 +118,6 @@ function InitialAvatar({ name, md }: { name: string; md?: boolean }) {
   );
 }
 
-// ── Main component ─────────────────────────────────────────────────────────
 export default function HelpCenter({ dark }: HelpCenterProps) {
   const [activeFilter, setActiveFilter] = useState("Open");
   const [selected, setSelected]         = useState<Ticket>(TICKETS[0]);
@@ -130,7 +125,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
   const [statuses, setStatuses]         = useState<Record<string, TicketStatus>>({});
   const [notes, setNotes]               = useState<Record<string, string>>({});
 
-  // ── Theme ────────────────────────────────────────────────────────────────
   const page            = dark ? "bg-gray-950 text-gray-100"   : "bg-stone-100 text-gray-900";
   const card            = dark ? "bg-gray-900 border-gray-800"  : "bg-white border-gray-200";
   const inner           = dark ? "bg-gray-800 border-gray-700"  : "bg-stone-50 border-stone-200";
@@ -151,7 +145,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
   const ticketBase      = dark ? "bg-gray-800 border-gray-700"  : "bg-stone-50 border-stone-200";
   const statusPill      = dark ? STATUS_PILL_DARK : STATUS_PILL_LIGHT;
 
-  // ── Derived values ───────────────────────────────────────────────────────
   const openCount     = TICKETS.filter(tk => (statuses[tk.id] ?? tk.status) === "Open").length;
   const currentStatus = statuses[selected.id] ?? selected.status;
 
@@ -237,10 +230,8 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
           </div>
         </div>
 
-        {/* ── RIGHT: User & Trip summary ────────────────────────────────── */}
         <div className={`rounded-2xl border p-5 flex flex-col gap-5 overflow-y-auto ${card}`} style={{ maxHeight: "720px" }}>
 
-          {/* Panel header + Mark as resolved */}
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-semibold mb-0.5">User &amp; trip summary</p>
@@ -264,7 +255,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
             )}
           </div>
 
-          {/* User identity */}
           <div>
             <div className="flex items-center gap-3 mb-3">
               <InitialAvatar name={selected.userInfo.name} md />
@@ -284,7 +274,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
             </div>
           </div>
 
-          {/* Trip details */}
           <div className={`rounded-xl border p-4 flex flex-col gap-2.5 ${inner}`}>
             <p className={`text-xs font-semibold mb-1 uppercase tracking-wide ${muted}`}>Trip details</p>
             {[
@@ -302,7 +291,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
 
           <div className={`border-t ${divider}`} />
 
-          {/* Contact options */}
           <div>
             <p className="text-sm font-semibold mb-0.5">Contact options</p>
             <p className={`text-xs mb-3 ${muted}`}>Reach the user or related admin if needed.</p>
@@ -329,7 +317,6 @@ export default function HelpCenter({ dark }: HelpCenterProps) {
 
           <div className={`border-t ${divider}`} />
 
-          {/* Internal note */}
           <div>
             <p className="text-sm font-semibold mb-0.5">Internal note</p>
             <p className={`text-xs mb-3 ${muted}`}>Visible to admins only.</p>

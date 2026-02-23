@@ -232,14 +232,14 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
   </span>
 </button></div>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className=" grid grid-cols-4 gap-3">
         {[
           { label: "Total users", value: users.length.toString(), sub: "+12 this week" },
           { label: "Active", value: users.filter((u) => u.status === "active").length.toString(), sub: `${Math.round((users.filter((u) => u.status === "active").length / users.length) * 100)}% of total` },
           { label: "Pending", value: users.filter((u) => u.status === "pending").length.toString(), sub: "Awaiting review" },
           { label: "Blocked", value: users.filter((u) => u.status === "blocked").length.toString(), sub: "Requires action" },
         ].map((s) => (
-          <div key={s.label} className={`rounded-xl border p-3 flex flex-col gap-1 ${card}`}>
+          <div key={s.label} className={`bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border p-3 flex flex-col gap-1 ${card}`}>
             <span className={`text-xs ${muted}`}>{s.label}</span>
             <span className="text-xl font-semibold">{s.value}</span>
             <span className={`text-xs ${muted}`}>{s.sub}</span>
@@ -247,7 +247,7 @@ export default function UsersPage({ dark, onSelectUser }: UsersPageProps) {
         ))}
       </div>
 
-      <div className={`rounded-xl border ${card}`}>
+      <div className={`bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}>
         <div className={`flex items-center justify-between px-4 py-3 border-b ${divider}`}>
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs w-48 ${dark ? "bg-gray-800 border-gray-700 text-gray-400" : "bg-gray-50 border-gray-200 text-gray-400"}`}>
             🔍 Search users…

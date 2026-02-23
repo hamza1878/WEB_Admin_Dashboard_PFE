@@ -21,7 +21,7 @@ interface UserRowProps {
 
 export default function UsersTable({ dark }: UsersTableProps) {
   return (
-    <div className={`rounded-xl border p-4 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
+    <div className={`bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="text-sm font-semibold">Recent users</div>
