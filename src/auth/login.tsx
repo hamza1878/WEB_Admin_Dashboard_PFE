@@ -1,19 +1,23 @@
 import { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import TruckLoader from "./carsloginanimation";
 
-export default function LoginAdmin({ onSwitch = () => {} }) {
-  const [dark, setDark] = useState(true);
+export default function LoginAdmin({ onLogin }: { onLogin: (dark: boolean) => void }) {
+  // const [dark, setDark] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const savedDark = localStorage.getItem("dark") === "true";
+    const [dark, setDark] = useState(savedDark);
 
     const navigate = useNavigate();
   
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    onLogin(dark);
 
       navigate("/dashboard");
     setLoading(true);
@@ -66,7 +70,6 @@ export default function LoginAdmin({ onSwitch = () => {} }) {
         backgroundImage: `linear-gradient(rgba(168,85,247,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.05) 1px, transparent 1px)`,
         backgroundSize: "48px 48px",
       }} />
-
       {/* Glow TL */}
       <div className="absolute rounded-full pointer-events-none" style={{
         top: -160, left: -160, width: 520, height: 520,

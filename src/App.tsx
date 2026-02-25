@@ -1,24 +1,48 @@
-import { useState } from 'react';
-import AdminDashboard from './Dashboard/AdminDashboard';
-import LoginAdmin from './auth/login';
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import AdminDashboard from "./Dashboard/AdminDashboard";
+import LoginAdmin from "./auth/login";
+import IntroLoader from "./into/IntroLoader";
+import "./App.css";
 
-function App() {
-  const [view, setView] = useState('login'); 
+function LoginWithIntro() {
+  const [showIntro, setShowIntro] = useState(true);
 
-  return (
-    <div>
-      
-        <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginAdmin />} />
-        <Route path="/dashboard" element={<AdminDashboard />} />
-      </Routes>
-    </BrowserRouter>
-    </div>
-  );
+  if (showIntro) {
+    return <IntroLoader onDone={() => setShowIntro(false)} dark={false} />;
+  }
+
+  return <LoginAdmin onLogin={() => {}} />;
 }
 
-export default App;
+export default function App() {
+  const [dark, setDark] = useState(() => {
+    return localStorage.getItem("dark") === "true";
+  });
 
+  function toggleDark() {
+    setDark((prev) => {
+      const next = !prev;
+      localStorage.setItem("dark", String(next));
+      return next;
+    });
+  }
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<LoginWithIntro />} />
+        <Route
+          path="/dashboard"
+          element={
+            <AdminDashboard
+              dark={dark}
+              onToggleDark={toggleDark}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}

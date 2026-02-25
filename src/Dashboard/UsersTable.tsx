@@ -21,10 +21,10 @@ interface UserRowProps {
 
 export default function UsersTable({ dark }: UsersTableProps) {
   return (
-    <div className={`bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
+    <div className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <div className="text-sm font-semibold">Recent users</div>
+          <div className={`text-sm font-semibold ${dark ? "text-gray-100" : "text-gray-900"}`}>Recent users</div>
           <div className={`text-xs ${dark ? "text-gray-500" : "text-gray-400"}`}>Last signups &amp; status</div>
         </div>
         <button className="text-xs font-medium text-purple-500 hover:text-purple-400">View all</button>
@@ -64,7 +64,7 @@ function UserRow({ user, index, dark, onSelectUser }: UserRowProps) {
       }`}
       style={{ gridTemplateColumns: "1.6fr 1.5fr 0.8fr 0.7fr 0.4fr" }}
     >
-      <span className="font-medium flex items-center gap-1.5">
+      <span className={`font-medium flex items-center gap-1.5 ${dark ? "text-gray-100" : "text-gray-900"}`}>
         <img
           src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`}
           alt={user.name}
@@ -83,7 +83,7 @@ function UserRow({ user, index, dark, onSelectUser }: UserRowProps) {
           {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
         </span>
       </span>
-      <span className="font-medium">{user.trips}</span>
+      <span className={`font-medium ${dark ? "text-gray-100" : "text-gray-900"}`}>{user.trips}</span>
     </div>
   );
 }

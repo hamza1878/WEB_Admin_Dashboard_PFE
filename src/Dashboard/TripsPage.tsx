@@ -1,5 +1,7 @@
 // import { useState } from "react";
 
+import { useState } from "react";
+
 // type TripStatus = "Completed" | "Scheduled" | "Cancelled" | "In Progress";
 // type PaymentStatus = "Paid" | "Pending" | "Not billed";
 
@@ -387,8 +389,7 @@
 //       </div>
 //     </div>
 //   );
-// }
-import { useState } from "react";
+// }import { useState } from "react";
 
 type TripStatus = "completed" | "scheduled" | "cancelled";
 type PaymentStatus = "paid" | "pending" | "refunded";
@@ -433,57 +434,71 @@ export default function TripsPage({ dark }: TripsPageProps) {
   const [statusFilter, setStatusFilter] = useState("All");
   const [paymentFilter, setPaymentFilter] = useState("All");
 
+  // ── theme tokens ──────────────────────────────────────────────
+  const page    = dark ? "bg-gray-950 text-gray-100"  : "bg-stone-100 text-gray-900";
+  const card    = dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200";
+  const heading = dark ? "text-gray-100"               : "text-gray-900";
+  const muted   = dark ? "text-gray-400"               : "text-gray-500";
+  const divider = dark ? "border-gray-800"             : "border-gray-200";
+  const thead   = dark ? "bg-gray-800 border-gray-700" : "bg-gray-50 border-gray-200";
+  const rowHover= dark ? "hover:bg-gray-800"           : "hover:bg-gray-50";
+  const rowBorder = dark ? "border-gray-800"           : "border-gray-100";
+  const selectCls = dark
+    ? "bg-gray-800 border-gray-700 text-gray-300 focus:outline-none"
+    : "bg-gray-50 border-gray-200 text-gray-700 focus:outline-none";
+  const tdText  = dark ? "text-gray-300"               : "text-gray-700";
+  const tdMuted = dark ? "text-gray-500"               : "text-gray-400";
+  // ─────────────────────────────────────────────────────────────
+
   const filtered = TRIPS.filter((t) => {
-    const matchStatus =
-      statusFilter === "All" || t.tripStatus === statusFilter;
-    const matchPayment =
-      paymentFilter === "All" || t.paymentStatus === paymentFilter;
+    const matchStatus  = statusFilter  === "All" || t.tripStatus    === statusFilter;
+    const matchPayment = paymentFilter === "All" || t.paymentStatus === paymentFilter;
     return matchStatus && matchPayment;
   });
 
   return (
-    <div className="min-h-screen bg-gray-150 from-gray-50 to-purple-50 p-10 space-y-10">
+    <div className={`min-h-screen p-10 space-y-10 ${page}`}>
 
+      {/* Header */}
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Trips Dashboard
-          </h1>
-          <p className="text-sm text-gray-500 mt-2">
+          <h1 className={`text-3xl font-bold ${heading}`}>Trips Dashboard</h1>
+          <p className={`text-sm mt-2 ${muted}`}>
             Monitor bookings, revenue and trip performance.
           </p>
         </div>
-
-        <button className="px-6 py-3 rounded-xl text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
-          style={{ background: "#7C3AED" }}>
+        <button
+          className="px-6 py-3 rounded-xl text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all"
+          style={{ background: "#7C3AED" }}
+        >
           + New Trip
         </button>
       </header>
 
+      {/* Stat cards */}
       <div className="grid grid-cols-4 gap-6">
         {[
           { label: "Total Trips", value: "1,248" },
-          { label: "Completed", value: "982" },
-          { label: "Scheduled", value: "245" },
-          { label: "Revenue", value: "€42,850" },
+          { label: "Completed",   value: "982"   },
+          { label: "Scheduled",   value: "245"   },
+          { label: "Revenue",     value: "€42,850" },
         ].map((item) => (
           <div
             key={item.label}
-            className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+            className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}
           >
-            <p className="text-sm text-gray-500">{item.label}</p>
-            <p className="text-3xl font-bold text-gray-900 mt-4">
-              {item.value}
-            </p>
+            <p className={`text-sm ${muted}`}>{item.label}</p>
+            <p className={`text-3xl font-bold mt-4 ${heading}`}>{item.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm flex items-center gap-4">
+      {/* Filters */}
+      <div className={`rounded-3xl border p-6 shadow-sm flex items-center gap-4 ${card}`}>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none"
+          className={`px-4 py-2 rounded-xl border text-sm ${selectCls}`}
         >
           <option value="All">All Status</option>
           <option value="completed">Completed</option>
@@ -494,7 +509,7 @@ export default function TripsPage({ dark }: TripsPageProps) {
         <select
           value={paymentFilter}
           onChange={(e) => setPaymentFilter(e.target.value)}
-          className="px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none"
+          className={`px-4 py-2 rounded-xl border text-sm ${selectCls}`}
         >
           <option value="All">All Payments</option>
           <option value="paid">Paid</option>
@@ -503,14 +518,15 @@ export default function TripsPage({ dark }: TripsPageProps) {
         </select>
       </div>
 
-      <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* Table */}
+      <div className={`rounded-3xl border shadow-sm overflow-hidden ${card}`}>
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className={`border-b ${thead}`}>
             <tr>
-              {["Date", "Route","driver", "Passenger", "Vehicle", "Status", "Payment", "Amount"].map((h) => (
+              {["Date", "Route", "Driver", "Passenger", "Vehicle", "Status", "Payment", "Amount"].map((h) => (
                 <th
                   key={h}
-                  className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-widest text-left"
+                  className={`px-6 py-4 text-xs font-semibold uppercase tracking-widest text-left ${muted}`}
                 >
                   {h}
                 </th>
@@ -522,53 +538,43 @@ export default function TripsPage({ dark }: TripsPageProps) {
             {filtered.map((trip) => (
               <tr
                 key={trip.id}
-                className="border-b border-gray-100 hover:bg-gray-50 transition"
+                className={`border-b transition ${rowBorder} ${rowHover}`}
               >
                 <td className="px-6 py-5">
-                  <p className="text-sm font-medium text-gray-900">
-                    {trip.date}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {trip.time}
-                  </p>
+                  <p className={`text-sm font-medium ${heading}`}>{trip.date}</p>
+                  <p className={`text-xs mt-1 ${tdMuted}`}>{trip.time}</p>
                 </td>
 
-                <td className="px-6 py-5 text-sm text-gray-700">
+                <td className={`px-6 py-5 text-sm ${tdText}`}>
                   {trip.from} → {trip.to}
                 </td>
- <td className="px-6 py-5 text-sm text-gray-700">
+
+                <td className={`px-6 py-5 text-sm ${tdText}`}>
                   driver
                 </td>
+
                 <td className="px-6 py-5">
-                  <p className="text-sm font-medium text-gray-900">
-                    {trip.passenger}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {trip.ref}
-                  </p>
+                  <p className={`text-sm font-medium ${heading}`}>{trip.passenger}</p>
+                  <p className={`text-xs ${tdMuted}`}>{trip.ref}</p>
                 </td>
 
-                <td className="px-6 py-5 text-sm text-gray-700">
+                <td className={`px-6 py-5 text-sm ${tdText}`}>
                   {trip.vehicle}
                 </td>
 
                 <td className="px-6 py-5">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_STYLES[trip.tripStatus]}`}
-                  >
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_STYLES[trip.tripStatus]}`}>
                     {trip.tripStatus}
                   </span>
                 </td>
 
                 <td className="px-6 py-5">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${PAYMENT_STYLES[trip.paymentStatus]}`}
-                  >
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${PAYMENT_STYLES[trip.paymentStatus]}`}>
                     {trip.paymentStatus}
                   </span>
                 </td>
 
-                <td className="px-6 py-5 text-sm font-semibold text-gray-900">
+                <td className={`px-6 py-5 text-sm font-semibold ${heading}`}>
                   {trip.amount}
                 </td>
               </tr>
