@@ -14,6 +14,9 @@ import AnimatedMail from "./SearchBar";
 
 const PAGE_ORDER = ["dashboard", "users", "trips", "payments", "help", "settings", "security"];
 
+// Height of your top navbar — adjust this value to match your TravelSyncTopNav height
+const TOP_NAV_HEIGHT = 56; // px
+
 interface AdminDashboardProps {
   dark: boolean;
   onToggleDark: () => void;
@@ -78,7 +81,6 @@ function renderPage(page: string, props: PageProps) {
 }
 
 export default function AdminDashboard({ dark, onToggleDark }: AdminDashboardProps) {
-  // ✅ REMOVED: const [dark, setDark] = useState(false); ← this was the conflict
   const [activePage, setActivePage]   = useState("dashboard");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [displayPage, setDisplayPage] = useState("dashboard");
@@ -119,23 +121,42 @@ export default function AdminDashboard({ dark, onToggleDark }: AdminDashboardPro
       `}</style>
 
       <div
-        className={`min-h-screen flex flex-col ${
-          dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"
-        }`}
+        className={`min-h-screen ${dark ? "bg-gray-950 text-gray-100" : "bg-gray-100 text-gray-900"}`}
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
-        <TravelSyncTopNav dark={dark} onSearch={() => {}} />
+        <div
+          className="fixed top-0 left-0 right-0 z-50"
+          style={{ height: TOP_NAV_HEIGHT }}
+        >
+          <TravelSyncTopNav dark={dark} onSearch={() => {}} />
+        </div>
 
-        <div className="flex flex-1 overflow-hidden">
-          <Sidebar
-            dark={dark}
-            onToggleDark={onToggleDark}  
-            activePage={activePage}
-            onNavigate={navigate}
-          />
+        <div
+          className="flex"
+          style={{ paddingTop: TOP_NAV_HEIGHT, height: "100vh" }}
+        >
+          <aside
+            className={`fixed left-0 z-40 flex flex-col gap-4 px-3 py-4 border-r w-60 ${
+              dark ? "bg-gray-900 border-gray-800" : "bg-gray-50 border-gray-200"
+            }`}
+            style={{
+              top: TOP_NAV_HEIGHT,
+              height: `calc(100vh - ${TOP_NAV_HEIGHT}px)`,
+            }}
+          >
+            <Sidebar
+              dark={dark}
+              onToggleDark={onToggleDark}
+              activePage={activePage}
+              onNavigate={navigate}
+            />
+          </aside>
 
-          <main className="flex-1 overflow-y-auto p-6">
-            <div className={slideClass}>
+          <main
+            className="flex-1 overflow-y-auto p-6"
+            style={{ marginLeft: 240 }} 
+          >
+            <div className={`${slideClass} transition-opacity duration-300`}>
               {renderPage(displayPage, {
                 dark,
                 onSelectUser: (name) => setSelectedUser(name),

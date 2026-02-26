@@ -10,7 +10,7 @@ export default function LoginAdmin({ onLogin }: { onLogin: (dark: boolean) => vo
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const savedDark = localStorage.getItem("dark") === "true";
+  const savedDark = localStorage.getItem("dark") === "false";
     const [dark, setDark] = useState(savedDark);
 
     const navigate = useNavigate();
@@ -85,18 +85,17 @@ export default function LoginAdmin({ onLogin }: { onLogin: (dark: boolean) => vo
       <div className="flex-1 flex flex-col justify-between transition-colors duration-300"
         style={{ padding: "52px 72px", borderRight: `1px solid ${t.leftBorder}` }}>
 
-        {/* Logo + toggle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-24 h-24 "
+            <div className="w-32 h-32 "
               >
                 
-               <img src={logo} alt="Logo" className="w-48 mx-auto" />
+               <img src={logo} alt="Logo" className="w-72 mx-auto" />
 
             </div>
             <div>
-              <div className="font-extrabold text-xl" style={{ color: t.heading, letterSpacing: "-0.5px" }}>
-                moviroo
+              <div className="font-extrabold text-4xl" style={{ color: t.heading, letterSpacing: "-0.5px" }}>
+                Moviroo
               </div>
               <div className="text-xs uppercase tracking-widest" style={{ color: t.sub }}>
                 Operations Console

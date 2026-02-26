@@ -2,14 +2,14 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AdminDashboard from "./Dashboard/AdminDashboard";
 import LoginAdmin from "./auth/login";
-import IntroLoader from "./into/IntroLoader";
 import "./App.css";
+import IntroLoader from "./into/IntroLoader";
 
 function LoginWithIntro() {
   const [showIntro, setShowIntro] = useState(true);
-
+  
   if (showIntro) {
-    return <IntroLoader onDone={() => setShowIntro(false)} dark={false} />;
+    return <IntroLoader onDone={() => setShowIntro(false)} onFinish={() => setShowIntro(false)} dark={false} />;
   }
 
   return <LoginAdmin onLogin={() => {}} />;

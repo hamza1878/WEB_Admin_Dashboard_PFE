@@ -19,30 +19,42 @@ interface SidebarFooterProps {
   dark: boolean;
   onToggleDark: () => void;
 }
- 
+
 export default function Sidebar({ dark, onToggleDark, activePage, onNavigate }: SidebarProps) {
   return (
-    
-    <aside
-      className={`w-60 min-h-screen sticky top-0 flex flex-col gap-4 px-3 py-4 border-r shrink-0 ${
-        dark ? "bg-gray-900 border-gray-800" : "bg-gray-50 border-gray-200"
-      }`}
-    >
-      
-
-      <NavSection label="Overview" items={NAV_ITEMS} dark={dark} activePage={activePage} onNavigate={onNavigate} />
-      <NavSection label="Support & settings" items={NAV_SUPPORT} dark={dark} activePage={activePage} onNavigate={onNavigate} />
+    // No fixed/absolute positioning here — the parent <aside> in AdminDashboard handles that.
+    // This component just fills whatever space it's given.
+    <div className="flex flex-col h-full gap-4">
+      <NavSection
+        label="Overview"
+        items={NAV_ITEMS}
+        dark={dark}
+        activePage={activePage}
+        onNavigate={onNavigate}
+      />
+      <NavSection
+        label="Support & settings"
+        items={NAV_SUPPORT}
+        dark={dark}
+        activePage={activePage}
+        onNavigate={onNavigate}
+      />
 
       <div className="flex-1" />
+
       <SidebarFooter dark={dark} onToggleDark={onToggleDark} />
-    </aside>
+    </div>
   );
 }
 
 function NavSection({ label, items, dark, activePage, onNavigate }: NavSectionProps) {
   return (
     <div>
-      <div className={`text-xs font-semibold uppercase tracking-widest px-2 mb-2 ${dark ? "text-gray-500" : "text-gray-400"}`}>
+      <div
+        className={`text-xs font-semibold uppercase tracking-widest px-2 mb-2 ${
+          dark ? "text-gray-500" : "text-gray-400"
+        }`}
+      >
         {label}
       </div>
       <div className="flex flex-col gap-0.5">
@@ -59,7 +71,11 @@ function NavSection({ label, items, dark, activePage, onNavigate }: NavSectionPr
                   ? "text-gray-300 hover:bg-gray-800"
                   : "text-gray-600 hover:bg-gray-200"
               }`}
-              style={isActive ? { background: "linear-gradient(135deg,#a855f7,#7c3aed)" } : {}}
+              style={
+                isActive
+                  ? { background: "linear-gradient(135deg,#a855f7,#7c3aed)" }
+                  : {}
+              }
             >
               <span className="text-base w-5 text-center">{item.icon}</span>
               {item.label}
@@ -73,8 +89,8 @@ function NavSection({ label, items, dark, activePage, onNavigate }: NavSectionPr
 
 function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
   return (
-    <div className={` pt-3 border-t ${dark ? "border-gray-800" : "border-gray-200"}`}>
-      <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2">
+    <div className={`pt-3 border-t ${dark ? "border-gray-800" : "border-gray-200"}`}>
+      <div className="flex items-center gap-2">
         <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 bg-purple-200">
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
@@ -82,7 +98,7 @@ function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className=" flex-1 min-w-0">
+        <div className="flex-1 min-w-0">
           <div className="text-sm font-medium truncate">Alex Martin</div>
           <div className={`text-xs ${dark ? "text-gray-500" : "text-gray-400"}`}>Super admin</div>
         </div>
@@ -90,12 +106,21 @@ function SidebarFooter({ dark, onToggleDark }: SidebarFooterProps) {
           <button
             onClick={onToggleDark}
             className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs transition-colors ${
-              dark ? "border-gray-700 bg-gray-800 text-gray-300" : "border-gray-200 bg-white text-gray-500"
+              dark
+                ? "border-gray-700 bg-gray-800 text-gray-300"
+                : "border-gray-200 bg-white text-gray-500"
             }`}
           >
             {dark ? "☀" : "🌙"}
           </button>
-          <button onClick={() => window.history.back()} className={`w-6 h-6 rounded-full border bg-border-red flex items-center justify-center text-xs ${dark ? "border-gray-700 bg-gray-800 text-gray-300" : "border-gray-200 bg-white text-gray-500"}`}>
+          <button
+            onClick={() => window.history.back()}
+            className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs ${
+              dark
+                ? "border-gray-700 bg-gray-800 text-gray-300"
+                : "border-gray-200 bg-white text-gray-500"
+            }`}
+          >
             ↩
           </button>
         </div>

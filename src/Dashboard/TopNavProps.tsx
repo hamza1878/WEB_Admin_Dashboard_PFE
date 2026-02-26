@@ -16,7 +16,7 @@ export default function TravelSyncTopNav({ dark, onSearch }: TopNavProps) {
     : "border-gray-200 text-gray-600 hover:bg-gray-50";
 
   return (
-    <nav className={`w-full h-12 border-b flex items-center justify-between px-8 shrink-0 z-10 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
+    <nav className={`w-full h-16 border-b flex items-center justify-between px-8 shrink-0 z-10 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100"}`}>
       
     
       <div className="flex items-center gap-3">

@@ -21,7 +21,7 @@ interface UserRowProps {
 
 export default function UsersTable({ dark }: UsersTableProps) {
   return (
-    <div className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
+    <div className={`overflow-hidden rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"}`}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className={`text-sm font-semibold ${dark ? "text-gray-100" : "text-gray-900"}`}>Recent users</div>
@@ -31,7 +31,7 @@ export default function UsersTable({ dark }: UsersTableProps) {
       </div>
 
       <div
-        className={`grid text-xs font-medium mb-2 pb-1 border-b ${dark ? "text-gray-500 border-gray-800" : "text-gray-400 border-gray-100"}`}
+        className={`grid text-xs  overflow-hidden font-medium mb-2 pb-1 border-b ${dark ? "text-gray-500 border-gray-800" : "text-gray-400 border-gray-100"}`}
         style={{ gridTemplateColumns: "1.6fr 1.5fr 0.8fr 0.7fr 0.4fr" }}
       >
         <span>Name</span>
