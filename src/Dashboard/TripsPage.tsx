@@ -475,7 +475,6 @@ export default function TripsPage({ dark }: TripsPageProps) {
         </button>
       </header>
 
-      {/* Stat cards */}
       <div className="grid grid-cols-4 gap-6">
         {[
           { label: "Total Trips", value: "1,248" },
@@ -485,7 +484,7 @@ export default function TripsPage({ dark }: TripsPageProps) {
         ].map((item) => (
           <div
             key={item.label}
-            className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}
+            className={`rounded-3xl border p-6 shadow-sm  transition-all duration-300 ${card}`}
           >
             <p className={`text-sm ${muted}`}>{item.label}</p>
             <p className={`text-3xl font-bold mt-4 ${heading}`}>{item.value}</p>

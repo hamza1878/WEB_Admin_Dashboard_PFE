@@ -252,7 +252,7 @@ const [position, setPosition] = useState({ x: 50, y: 50 });
         ].map((s) => (
           <div
             key={s.label}
-            className={`rounded-3xl border p-5 flex flex-col gap-1 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}
+            className={`rounded-3xl border p-5 flex flex-col gap-1 shadow-sm  transition-all duration-300 ${card}`}
           >
             <span className={`text-xs ${muted}`}>{s.label}</span>
             <span className={`text-xl font-semibold ${heading}`}>{s.value}</span>
@@ -262,7 +262,7 @@ const [position, setPosition] = useState({ x: 50, y: 50 });
       </div>
 
       {/* Table card */}
-      <div className={`rounded-3xl border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}>
+      <div className={`rounded-3xl border shadow-sm  transition-all duration-300 ${card}`}>
         {/* Toolbar */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${divider}`}>
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs w-48 ${searchBar}`}>

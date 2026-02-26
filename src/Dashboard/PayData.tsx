@@ -126,7 +126,7 @@ export default function AgencyPaymentsData({ dark }: PaymentsPageProps) {
         {stats.map((s) => (
           <div
             key={s.label}
-            className={`rounded-3xl border p-5 flex flex-col gap-2 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${card}`}
+            className={`rounded-3xl border p-5 flex flex-col gap-2 shadow-sm  transition-all duration-300 ${card}`}
           >
             <div className="flex items-center justify-between">
               <span className={`text-xs ${muted}`}>{s.label}</span>
@@ -168,7 +168,7 @@ export default function AgencyPaymentsData({ dark }: PaymentsPageProps) {
       </div>
 
       {/* Table */}
-      <div className={`rounded-3xl border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden ${card}`}>
+      <div className={`rounded-3xl border shadow-sm  transition-all duration-300 overflow-hidden ${card}`}>
         {/* Column headers */}
         <div
           className={`grid text-[10px] font-semibold uppercase tracking-wider px-5 py-3 border-b ${thead}`}

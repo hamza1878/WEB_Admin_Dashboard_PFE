@@ -107,7 +107,6 @@ export default function LoginAdmin({ onLogin }: { onLogin: (dark: boolean) => vo
         
         </div>
 
-        {/* Hero */}
         <div>
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-7"
             style={{ background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)" }}>

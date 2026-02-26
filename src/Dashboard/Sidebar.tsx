@@ -77,7 +77,7 @@ function NavSection({ label, items, dark, activePage, onNavigate }: NavSectionPr
                   : {}
               }
             >
-              <span className="text-base w-5 text-center">{item.icon}</span>
+              <span className="text-base w-5 text-center"><img src={item.icon} /></span>
               {item.label}
             </button>
           );

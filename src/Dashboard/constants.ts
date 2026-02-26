@@ -1,16 +1,22 @@
+
+import pay from "../assets/pay.gif";
+import mapIcon from "../assets/map.png"; 
+import groupe from "../assets/group.png";
+
 export interface NavItem {
-  icon: string;
+  icon: string | any; 
   label: string;
   page: string;
+  type?: "page" | "layout"; // optional type to distinguish layout controls
+  layouts?: { label: string; icon: string | any; key: string }[]; // optional layout options
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { icon: "⊞", label: "Dashboard", page: "dashboard" },
-  { icon: "👥", label: "Users", page: "users" },
-  { icon: "🚗", label: "Trips", page: "trips" },
-  { icon: "💳", label: "Payments", page: "payments" },
+  { icon: "⊞", label: "Dashboard", page: "dashboard", type: "page" },
+  { icon: groupe, label: "Users", page: "users", type: "page" },
+  { icon: mapIcon, label: "Trips", page: "trips", type: "page" },
+  { icon: pay, label: "Payments", page: "payments", type: "page" },
 ];
-
 export const NAV_SUPPORT: NavItem[] = [
   { icon: "🎧", label: "Help center", page: "help" },
   { icon: "⚙️", label: "Settings", page: "settings" },

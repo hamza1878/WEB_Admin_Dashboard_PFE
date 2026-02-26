@@ -15,7 +15,7 @@ export default function StatCard({ title, value, tag, trend, note, warning, dark
   const chip    = dark ? "bg-gray-800 text-gray-400"   : "bg-gray-100 text-gray-500";
 
   return (
-    <div className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col gap-2 ${card}`}>
+    <div className={`rounded-3xl border p-6 shadow-sm  transition-all duration-300 flex flex-col gap-2 ${card}`}>
       <div className="flex items-center justify-between">
         <span className={`text-xs ${muted}`}>{title}</span>
         <span className={`text-xs px-1.5 py-0.5 rounded-full ${chip}`}>{tag}</span>

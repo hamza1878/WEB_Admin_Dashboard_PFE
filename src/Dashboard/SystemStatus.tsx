@@ -19,7 +19,7 @@ interface UsageBarProps {
 export default function SystemStatus({ dark }: SystemStatusProps) {
   return (
     <div
-      className={`rounded-3xl border p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${
+      className={`rounded-3xl border p-6 shadow-sm  transition-all duration-300 ${
         dark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
       }`}
     >
