@@ -25,7 +25,7 @@ export function CustomTooltip({
 
   return (
     <div
-      className="rounded-lg border px-3 py-2 shadow-lg"
+      className="rounded-xl border px-3 py-2 shadow-lg"
       style={{
         background: dark ? C.darkSurface : C.lightSurface,
         borderColor: dark ? C.darkBorder : C.lightBorder,
