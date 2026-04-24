@@ -68,6 +68,8 @@ import { StatsStrip } from "./DataDash/StatsStrip";
 import { FleetTable } from "./DataDash/FleetTable";
 import { AIStrategyPanel } from "./DataDash/AIStrategyPanel";
 import { IssuesPanel } from "./DataDash/IssuesPanel";
+import { LiveMapPage } from "./DataDash/Livemappage";
+import { AIInsightsPage } from "./DataDash/Aiinsightspage";
 
 
 export default function App() {
@@ -105,6 +107,20 @@ export default function App() {
         setActiveNav={setActiveNav}
       />
 
+      {/* ── Page routing ────────────────────────────────────────── */}
+      {activeNav === "Live Map" && (
+        <div style={{ padding: "20px 24px" }}>
+          <LiveMapPage dark={dark} />
+        </div>
+      )}
+
+      {activeNav === "AI Insights" && (
+        <div style={{ padding: "20px 24px" }}>
+          <AIInsightsPage dark={dark} />
+        </div>
+      )}
+
+      {(activeNav === "Dashboard" || activeNav === "Revenue" || activeNav === "Fleet") && (
       <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
 
         {/* ── Page header ─────────────────────────────────────────── */}
@@ -209,6 +225,7 @@ export default function App() {
         {/* ── Fleet Table ─────────────────────────────────────────── */}
         <FleetTable dark={dark} showAll={showAll} setShowAll={setShowAll} />
       </div>
+      )} {/* end Dashboard/Revenue/Fleet conditional */}
 
       {/* ── Footer ──────────────────────────────────────────────── */}
       <footer
