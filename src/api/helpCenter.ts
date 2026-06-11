@@ -1,0 +1,63 @@
+import apiClient from "./apiClient";
+
+export interface ArticleStepRaw {
+  order: number;
+  title: Record<string, string>;
+  description: Record<string, string>;
+}
+
+export interface StepInput {
+  order: number;
+  title: string; // English only
+  description: string; // English only
+}
+
+export interface HelpArticleRaw {
+  id: string;
+  title: Record<string, string>;
+  description: Record<string, string>;
+  categoryKey: string;
+  categoryLabel: Record<string, string>;
+  status: "active" | "disabled";
+  isActive: boolean;
+  sortOrder: number;
+  steps: ArticleStepRaw[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateArticlePayload {
+  title: string;
+  description: string;
+  categoryKey: string;
+  categoryLabel?: string;
+  status?: "active" | "disabled";
+  steps?: StepInput[];
+}
+
+export interface UpdateArticlePayload {
+  title?: Record<string, string>;
+  description?: Record<string, string>;
+  categoryKey?: string;
+  categoryLabel?: Record<string, string>;
+  status?: "active" | "disabled";
+  isActive?: boolean;
+  steps?: StepInput[];
+}
+
+export const helpCenterApi = {
+  listAll: (): Promise<HelpArticleRaw[]> =>
+    apiClient.get("/admin/help-center").then((r) => r.data),
+
+  getOne: (id: string): Promise<HelpArticleRaw> =>
+    apiClient.get(`/admin/help-center/${id}`).then((r) => r.data),
+
+  create: (data: CreateArticlePayload): Promise<HelpArticleRaw> =>
+    apiClient.post("/admin/help-center", data).then((r) => r.data),
+
+  update: (id: string, data: UpdateArticlePayload): Promise<HelpArticleRaw> =>
+    apiClient.patch(`/admin/help-center/${id}`, data).then((r) => r.data),
+
+  delete: (id: string): Promise<void> =>
+    apiClient.delete(`/admin/help-center/${id}`).then(() => undefined),
+};
